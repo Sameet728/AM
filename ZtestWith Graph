@@ -1,0 +1,49 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+# Given data
+n = 200
+x_bar = 3.2
+mu0 = 3
+sigma = 0.8
+alpha = 0.05
+
+# Z-test calculation
+z = (x_bar - mu0) / (sigma / np.sqrt(n))
+
+# Critical values for two-tailed test
+critical_v = norm.ppf(1 - alpha/2)
+
+# Create x values
+x = np.linspace(-4, 4, 1000)
+y = norm.pdf(x)
+
+# Plot normal curve
+plt.plot(x, y, label='Normal Distribution')
+
+# Shade rejection regions
+plt.fill_between(x, y, where=(x <= -critical_v),
+                 alpha=0.5, label='Reject Region')
+
+plt.fill_between(x, y, where=(x >= critical_v),
+                 alpha=0.5)
+
+# Draw critical value lines
+plt.axvline(-critical_v, linestyle='--',
+            label=f'-Critical = {-critical_v:.2f}')
+
+plt.axvline(critical_v, linestyle='--',
+            label=f'+Critical = {critical_v:.2f}')
+
+# Draw z-test statistic line
+plt.axvline(z, linestyle='-',
+            label=f'Z Statistic = {z:.2f}')
+
+# Labels
+plt.title('Two-Tailed Z-Test')
+plt.xlabel('Z values')
+plt.ylabel('Probability Density')
+plt.legend()
+
+plt.show()
